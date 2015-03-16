@@ -19,6 +19,8 @@ namespace MonoRPGSelfStudy
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Actor mainActor;
+
         public Game1()
             : base()
         {
@@ -35,8 +37,10 @@ namespace MonoRPGSelfStudy
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            mainActor = new Actor(@"ActorSprite/Actor1");
+            
             base.Initialize();
+            
         }
 
         /// <summary>
@@ -47,7 +51,8 @@ namespace MonoRPGSelfStudy
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            SpriteManager.Instance.LoadContent(Content);
+            mainActor.LoadContent();
             // TODO: use this.Content to load your game content here
         }
 
@@ -84,6 +89,9 @@ namespace MonoRPGSelfStudy
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            mainActor.Draw(gameTime, spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
