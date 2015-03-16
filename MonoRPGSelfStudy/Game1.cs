@@ -19,8 +19,8 @@ namespace MonoRPGSelfStudy
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Actor mainActor;
-
+        //Actor mainActor;
+        ShooterPlayer player;
         public Game1()
             : base()
         {
@@ -37,7 +37,8 @@ namespace MonoRPGSelfStudy
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            mainActor = new Actor(@"ActorSprite/Actor1");
+            //mainActor = new Actor(@"ActorSprite/Actor1");
+            player = new ShooterPlayer(@"Shooter/player");
             
             base.Initialize();
             
@@ -52,7 +53,11 @@ namespace MonoRPGSelfStudy
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteManager.Instance.LoadContent(Content);
-            mainActor.LoadContent();
+            //mainActor.LoadContent();
+            player.LoadContent();
+            Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X,
+                GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
+            player.Initialize(playerPosition);
             // TODO: use this.Content to load your game content here
         }
 
@@ -90,7 +95,8 @@ namespace MonoRPGSelfStudy
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            mainActor.Draw(gameTime, spriteBatch);
+            //mainActor.Draw(gameTime, spriteBatch);
+            player.Draw(gameTime, spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
