@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 #endregion
@@ -21,6 +22,21 @@ namespace MonoRPGSelfStudy
 
         //Actor mainActor;
         ShooterPlayer player;
+
+
+        //Handle input device states
+        KeyboardState currentKeyboardState;
+        KeyboardState previousKeyboardState;
+
+        GamePadState currentGamePadState;
+        GamePadState previousGamePadState;
+
+        MouseState currentMouseState;
+        MouseState previousMouseState;
+
+        //player move speed
+        float playerMoveSpeed;
+
         public Game1()
             : base()
         {
@@ -38,7 +54,11 @@ namespace MonoRPGSelfStudy
         {
             // TODO: Add your initialization logic here
             //mainActor = new Actor(@"ActorSprite/Actor1");
-            player = new ShooterPlayer(@"Shooter/player");
+            player = new ShooterPlayer(@"Shooter/Graphics/player");
+            playerMoveSpeed = 8.0f;
+
+            //add touch screen support
+            TouchPanel.EnabledGestures = GestureType.FreeDrag;
             
             base.Initialize();
             
@@ -81,8 +101,49 @@ namespace MonoRPGSelfStudy
                 Exit();
 
             // TODO: Add your update logic here
+            previousGamePadState = currentGamePadState;
+            previousKeyboardState = currentKeyboardState;
+
+            currentKeyboardState = Keyboard.GetState();
+            currentGamePadState = GamePad.GetState(PlayerIndex.One);
+
+            UpdatePlayer(gameTime);
+
 
             base.Update(gameTime);
+        }
+
+        private void UpdatePlayer(GameTime gameTime)
+        {
+            player.Position.X += currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed;
+            player.Position.Y -= currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed;
+
+            //Handle keyboard and DPad input
+            if (currentKeyboardState.IsKeyDown(Keys.Right) || currentKeyboardState.IsKeyDown(Keys.D) 
+                || currentGamePadState.DPad.Right == ButtonState.Pressed)
+            {
+                player.Position.X += playerMoveSpeed;
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.Left) || currentKeyboardState.IsKeyDown(Keys.A) 
+                || currentGamePadState.DPad.Left == ButtonState.Pressed)
+            {
+                player.Position.X -= playerMoveSpeed;
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.Up) || currentKeyboardState.IsKeyDown(Keys.W) 
+                || currentGamePadState.DPad.Up == ButtonState.Pressed)
+            {
+                player.Position.Y -= playerMoveSpeed;
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.Down) || currentKeyboardState.IsKeyDown(Keys.S) 
+                || currentGamePadState.DPad.Down == ButtonState.Pressed)
+            {
+                player.Position.Y += playerMoveSpeed;
+            }
+
+            player.Position.X = MathHelper.Clamp(player.Position.X, 0, GraphicsDevice.Viewport.Width - player.Width);
+            player.Position.Y = MathHelper.Clamp(player.Position.Y, 0, GraphicsDevice.Viewport.Height - player.Height);
+
+            // TODO: Add Mouse and Touch support
         }
 
         /// <summary>
