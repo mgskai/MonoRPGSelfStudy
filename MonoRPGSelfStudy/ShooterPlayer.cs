@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoRPGSelfStudy
 {
-    class ShooterPlayer : Sprite
+    public class ShooterPlayer : Sprite
     {
         //player position
         public Vector2 Position;
@@ -24,7 +24,8 @@ namespace MonoRPGSelfStudy
         {
             get
             {
-                return this.spriteTexture.Width;
+                //return this.spriteTexture.Width;
+                return spriteAnimation.FrameWidth;
             }
         }
 
@@ -33,7 +34,8 @@ namespace MonoRPGSelfStudy
         {
             get
             {
-                return this.spriteTexture.Height;
+                //return this.spriteTexture.Height;
+                return spriteAnimation.FrameHeight;
             }
         }
 
@@ -49,11 +51,26 @@ namespace MonoRPGSelfStudy
             Active = true;
 
             Health = 100;
+
+            spriteAnimation.Initialize(spriteTexture, Vector2.Zero, 115, 69, 8, 30, 
+                Color.White, 1f, true);
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            spriteAnimation.Position = Position;
+            spriteAnimation.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(spriteTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            //spriteBatch.Draw(spriteTexture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteAnimation.Draw(spriteBatch);
             base.Draw(gameTime, spriteBatch);
         }
 

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoRPGSelfStudy
 {
-    class Animation
+    public class Animation
     {
         private Texture2D spriteStrip;
 

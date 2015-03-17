@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Storage;
-using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
 namespace MonoRPGSelfStudy
@@ -54,7 +53,7 @@ namespace MonoRPGSelfStudy
         {
             // TODO: Add your initialization logic here
             //mainActor = new Actor(@"ActorSprite/Actor1");
-            player = new ShooterPlayer(@"Shooter/Graphics/player");
+            player = new ShooterPlayer(@"Shooter/Graphics/shipAnimation");
             playerMoveSpeed = 8.0f;
 
             //add touch screen support
@@ -115,6 +114,7 @@ namespace MonoRPGSelfStudy
 
         private void UpdatePlayer(GameTime gameTime)
         {
+            player.Update(gameTime);
             player.Position.X += currentGamePadState.ThumbSticks.Left.X * playerMoveSpeed;
             player.Position.Y -= currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed;
 
